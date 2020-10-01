@@ -1,0 +1,36 @@
+{
+  "name": "igme-430-project-1",
+  "version": "1.0.0",
+  "engines": {
+    "node": "12.18.3",
+    "npm": "6.14.8"
+  },
+  "description": "Project 1",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"tests complete\"",
+    "nodemon": "nodemon --watch ./src ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sxc6061/IGME-430-Project-1.git"
+  },
+  "keywords": [
+    "Meetup",
+    "Reminder"
+  ],
+  "author": "Steven Cho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sxc6061/IGME-430-Project-1/issues"
+  },
+  "homepage": "https://github.com/sxc6061/IGME-430-Project-1#readme",
+  "devDependencies": {
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.4"
+  }
+}

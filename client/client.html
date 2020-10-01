@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Our simple HTTP server</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <script>
+  const parseJSON = (xhr, content) => {
+    if(xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json'){
+      const obj = JSON.parse(xhr.response);
+      console.dir(obj);
+      
+      if(obj.message){
+        content.innerHTML += `<p>${obj.message}</p>`;
+      }
+      else if (obj.events){
+        let objEvents = JSON.stringify(obj.events);
+        content.innerHTML += `<p>${objEvents}</p>`;
+      }
+    }
+  };
+  
+  const handleResponse = (xhr, parseResponse) => {
+      const content = document.querySelector('#content');
+      
+      switch(xhr.status){
+      	case 200:
+      		content.innerHTML = '<b>Success!</b>';
+      		break;
+      	case 201:
+      		content.innerHTML = '<b>Created!</b>';
+          break;
+        case 204:
+      		content.innerHTML = '<b>Updated (No Content)!</b>';
+      		break;
+      	case 400:
+      		content.innerHTML = '<b>Bad Request</b>';
+      		break;
+      	case 404:
+      	content.innerHTML = '<b>Resource Not Found</b>';
+      		break;
+      	default:
+      	content.innerHTML = '<b>Error code not implemented by client</b>';
+      		break;
+      }
+    
+      parseJSON(xhr,content);
+    };
+
+    const requestUpdate = (e) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET','/getEvents');
+      xhr.setRequestHeader("Accept","application/json");
+      xhr.onload = () => handleResponse(xhr,true);
+      
+      xhr.send();
+      
+			e.preventDefault();
+			return false; // prevents event bubbling
+    };
+
+    const sendPost = (e, nameForm) => {
+			e.preventDefault();
+			
+			const nameAction = nameForm.getAttribute("action");
+			const nameMethod = nameForm.getAttribute("method");
+			
+			const nameField = nameForm.querySelector("#nameField");
+      const dateField = nameForm.querySelector("#dateField");
+      const descField = nameForm.querySelector('#descField');
+			
+			const xhr = new XMLHttpRequest();
+			xhr.open(nameMethod,nameAction); 
+			
+			xhr.setRequestHeader('Accept','application/json');
+			xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+			xhr.onload = () => handleResponse(xhr);
+			
+			const formData = `name=${nameField.value}&date=${dateField.value}&description=${descField.value}`;
+      xhr.send(formData); 
+      requestUpdate(e);
+			return false; // prevents event bubbling
+    };
+
+    const init = () => {
+      const nameForm = document.querySelector('#nameForm');
+      const addEvent = (e) => sendPost(e, nameForm);
+      
+      nameForm.addEventListener('submit', addEvent);
+    };
+
+    window.onload = init;
+    
+  </script>
+</head>
+<body>
+  <section id="top">
+    <h3>Event Scheduler</h3>
+    <form id="nameForm" action="/addEvent" method="post">
+      <label for="name">Event Name: </label>
+      <input id="nameField" type="text" name="name" />
+      <label for="date">Date: </label>
+      <input id="dateField" type="date" name="date" />
+      <label for="description">Description: </label>
+      <input id="descField" type="text" name="description" />
+      <input type="submit" value="Add Event" />
+    </form>
+  </section>
+  <section id="content">
+  </section>
+</body>
+</html>
