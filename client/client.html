@@ -13,8 +13,17 @@
         content.innerHTML += `<p>${obj.message}</p>`;
       }
       else if (obj.events){
-        let objEvents = JSON.stringify(obj.events);
-        content.innerHTML += `<p>${objEvents}</p>`;
+        const eventGrid = document.querySelector('#eventGrid');
+        const nameField = nameForm.querySelector("#nameField");
+        console.log(nameField.value);
+        eventGrid.innerHTML += `<div class="figure">
+          <h3>${obj.events[nameField.value].name}</h3>
+            <p>Date: ${obj.events[nameField.value].date}</p>
+              <p>
+                ${obj.events[nameField.value].description}
+              </p>
+            <button id="${obj.events[nameField.value]}">Email this to Someone</button>
+          </div>`;
       }
     }
   };
@@ -24,22 +33,19 @@
       
       switch(xhr.status){
       	case 200:
-      		content.innerHTML = '<b>Success!</b>';
+      		content.innerHTML += '<b>Event Added!</b>';
       		break;
-      	case 201:
-      		content.innerHTML = '<b>Created!</b>';
-          break;
         case 204:
-      		content.innerHTML = '<b>Updated (No Content)!</b>';
+      		content.innerHTML += '<b>Updated (No Content)!</b>';
       		break;
       	case 400:
-      		content.innerHTML = '<b>Bad Request</b>';
+      		content.innerHTML += '<b>Bad Request</b>';
       		break;
       	case 404:
-      	content.innerHTML = '<b>Resource Not Found</b>';
+      	content.innerHTML += '<b>Resource Not Found</b>';
       		break;
       	default:
-      	content.innerHTML = '<b>Error code not implemented by client</b>';
+      	content.innerHTML += '<b>Error code not implemented by client</b>';
       		break;
       }
     
@@ -78,12 +84,23 @@
 			
 			const formData = `name=${nameField.value}&date=${dateField.value}&description=${descField.value}`;
       xhr.send(formData); 
-      requestUpdate(e);
+      requestUpdate(e, nameField);
 			return false; // prevents event bubbling
     };
 
+    function openForm() {
+      document.getElementById("myForm").style.display = "block";
+      document.querySelector(".open-button").style.display = "none";
+    }
+
+    function closeForm() {
+      document.getElementById("myForm").style.display = "none";
+      document.querySelector(".open-button").style.display = "block";
+    }
+
     const init = () => {
       const nameForm = document.querySelector('#nameForm');
+      const eventGrid = document.querySelector('#eventGrid');
       const addEvent = (e) => sendPost(e, nameForm);
       
       nameForm.addEventListener('submit', addEvent);
@@ -96,17 +113,32 @@
 <body>
   <section id="top">
     <h3>Event Scheduler</h3>
-    <form id="nameForm" action="/addEvent" method="post">
-      <label for="name">Event Name: </label>
-      <input id="nameField" type="text" name="name" />
-      <label for="date">Date: </label>
-      <input id="dateField" type="date" name="date" />
-      <label for="description">Description: </label>
-      <input id="descField" type="text" name="description" />
-      <input type="submit" value="Add Event" />
-    </form>
+    <button class="open-button" onclick="openForm()">Add Event</button>
+    <div class="form-popup" id="myForm">
+      <form id="nameForm" action="/addEvent" method="post">
+        <label for="name">Event Name: </label>
+        <input id="nameField" type="text" name="name" />
+        <label for="date">Date: </label>
+        <input id="dateField" type="date" name="date" />
+        <label for="description">Description: </label>
+        <input id="descField" type="text" name="description" />
+        <input type="submit" value="Add Event" />
+      </form>
+      <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+    </div>
   </section>
   <section id="content">
+    <div id="eventGrid">
+      <div class="figure">
+        <h3>Placeholder</h3>
+          <p>12-1-2020</p>
+            <p>
+              This is a placeholder div. This is a placeholder div. 
+              This is a placeholder div. This is a placeholder div. 
+            </p>
+        <button>Email this to Someone</button>
+      </div>
+    </div>
   </section>
 </body>
 </html>

@@ -13,11 +13,7 @@ const urlStruct = {
     '/getEvents': jsonHandler.getUsers,
     '/updateUser': jsonHandler.updateUser,
     notFound: jsonHandler.notFound,
-  },
-  HEAD: {
-    '/getEvents': jsonHandler.getUsersMeta,
-    notFound: jsonHandler.notFoundMeta,
-  },
+  }
 };
 
 const handlePost = (request, response, parsedUrl) => {
