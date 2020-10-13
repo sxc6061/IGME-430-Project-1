@@ -7,12 +7,12 @@
   <script>
     let newObj;
     let update;
-    const parseJSON = (xhr, name, loading) => {
+    const parseJSON = (xhr, objName, loading) => {
       if(xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json'){
         let obj = JSON.parse(xhr.response);
         
-        if (name){
-          delete obj.events[name];
+        if (objName){
+          delete obj.events[objName];
           newObj = obj;
         }
         else if (update == true){
