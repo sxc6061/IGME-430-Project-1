@@ -10,10 +10,14 @@ const urlStruct = {
   GET: {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getCSS,
-    '/getEvents': jsonHandler.getUsers,
-    '/updateUser': jsonHandler.updateUser,
+    '/getEvents': jsonHandler.getEvents,
+    '/updateEvents': jsonHandler.updateEvents,
     notFound: jsonHandler.notFound,
-  }
+  },
+  HEAD: {
+    '/getEvents': jsonHandler.getEventsMeta,
+    notFound: jsonHandler.notFoundMeta,
+  },
 };
 
 const handlePost = (request, response, parsedUrl) => {
@@ -29,6 +33,19 @@ const handlePost = (request, response, parsedUrl) => {
       const bodyParams = query.parse(bodyString);
 
       jsonHandler.addEvent(request, response, bodyParams);
+    });
+  }
+  if (parsedUrl.pathname === '/deleteEvent') {
+    const body = [];
+
+    request.on('data', (chunk) => {
+      body.push(chunk);
+    });
+
+    request.on('end', () => {
+      const bodyString = Buffer.concat(body).toString();
+      const bodyParams = query.parse(bodyString);
+      jsonHandler.deleteEvent(request, response, bodyParams);
     });
   }
 };

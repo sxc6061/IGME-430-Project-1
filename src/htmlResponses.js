@@ -1,4 +1,5 @@
 const fs = require('fs'); // pull in the file system module
+const { request } = require('http');
 
 const index = fs.readFileSync(`${__dirname}/../client/client.html`);
 const css = fs.readFileSync(`${__dirname}/../client/style.css`);
@@ -17,5 +18,5 @@ const getCSS = (request, response) => {
 
 module.exports = {
   getIndex,
-  getCSS,
+  getCSS
 };

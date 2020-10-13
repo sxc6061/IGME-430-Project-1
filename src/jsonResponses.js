@@ -1,5 +1,5 @@
 // Note this object is purely in memory
-const events = {};
+let events = {};
 
 const respondJSON = (request, response, status, object) => {
   const headers = {
@@ -20,7 +20,7 @@ const respondJSONMeta = (request, response, status) => {
   response.end();
 };
 
-const getUsers = (request, response) => {
+const getEvents = (request, response) => {
   const responseJSON = {
     events,
   };
@@ -28,7 +28,7 @@ const getUsers = (request, response) => {
   return respondJSON(request, response, 200, responseJSON);
 };
 
-const getUsersMeta = (request, response) => respondJSONMeta(request, response, 200);
+const getEventsMeta = (request, response) => respondJSONMeta(request, response, 200);
 
 const addEvent = (request, response, body) => {
   const responseJSON = {
@@ -60,7 +60,7 @@ const addEvent = (request, response, body) => {
   return respondJSONMeta(request, response, responseCode); // this is for 204, a "no content" header
 };
 
-const updateUser = (request, response) => {
+const updateEvents = (request, response) => {
   const newEvent = {
     createdAt: Date.now(),
   };
@@ -78,13 +78,20 @@ const notFound = (request, response) => {
   return respondJSON(request, response, 404, responseJSON);
 };
 
+const deleteEvent = (request, response, body) => {
+  events = body;
+  //delete events[];
+  return respondJSONMeta(request, response, 200);
+}
+
 const notFoundMeta = (request, response) => respondJSONMeta(request, response, 404);
 
 module.exports = {
-  getUsers,
-  getUsersMeta,
+  getEvents,
+  getEventsMeta,
   addEvent,
-  updateUser,
+  updateEvents,
   notFound,
   notFoundMeta,
+  deleteEvent
 };

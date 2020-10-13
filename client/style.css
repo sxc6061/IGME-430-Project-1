@@ -1,4 +1,5 @@
 html, body {
+  background-image: url("https://mcdn.wallpapersafari.com/medium/79/25/0vNy1b.jpg");
   height: 100%;
   width: 100%;
   margin: 0;
@@ -11,11 +12,24 @@ html, body {
 }
 
 #top h1 {
-  font-size: 2em;
+  font-size: 4em;
+  background-color: #8d5b29;
+  border: thick #663300 solid;
+  border-radius: 2px;
+  font-family: 'Chilanka', cursive;
+  font-weight: bold;
+  display: inline;
 }
 
 #content {
   margin-top: 100px;
+}
+
+.dot{
+  height: 10px;
+  width: 10px;
+  background-color: #bbb;
+  border-radius: 50%;
 }
 
 /* Showcase */
@@ -23,29 +37,46 @@ html, body {
   width: 150px;
   height: 150px;
   text-align: center;
-  font-style: italic;
+  font-family: 'Chilanka', cursive;
   text-indent: 0;
-  border: thin silver solid;
+  border: thin rgb(253, 253, 141) solid;
   border-radius: 4px;
-  background-color: #333;
+  background-color: khaki;
   margin: 0.5em;
-  color: #ffffff;
+  color: black;
   position: relative;
-  opacity: 1;
   transition: 0.5s ease;
   backface-visibility: hidden;
   overflow: hidden;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: rgb(243, 227, 88); 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(207, 194, 73); 
+}
+
 .figure p{
   font-size: 15px;
 }
 .figure button{
-  background: #ffbddb;
+  background: rgb(209, 201, 123);
   color: black;
   font-size: 13px;
   padding: 10px;
   font-weight: bold;
-  font-family: 'Major Mono Display', monospace;
   border-radius: 4px;
 }
 .figure:hover{
@@ -57,20 +88,20 @@ html, body {
 }
 
 .open-button {
-  background-color: #555;
-  color: white;
+  background-color: khaki;
+  color: black;
   padding: 16px 20px;
   border: none;
   cursor: pointer;
-  opacity: 0.8;
   position: fixed;
   bottom: 23px;
   right: 28px;
   width: 280px;
+  font-family: 'Chilanka', cursive;
+  font-weight: bold;
 }
 
-/* The popup form - hidden by default */
-.form-popup {
+.form-popup, #emailFormDiv{
   display: none;
   position: fixed;
   bottom: 0;
@@ -79,29 +110,26 @@ html, body {
   z-index: 9;
 }
 
-/* Add styles to the form container */
-#nameForm {
+#nameForm, #emailForm{
   max-width: 300px;
   padding: 10px;
-  background-color: white;
+  background-color: khaki;
+  font-family: 'Chilanka', cursive;
 }
 
-/* Full-width input fields */
-#nameForm input[type=text], #nameForm input[type=date] {
-  width: 100%;
+input[type=text], input[type=date] {
+  width: 90%;
   padding: 10px;
   margin: 5px 0 22px 0;
   border: none;
-  background: #f1f1f1;
+  background: rgb(252, 238, 114);
 }
 
-/* When the inputs get focus, do something */
-#nameForm input[type=text]:focus, #nameForm input[type=date]:focus {
-  background-color: #ddd;
+input[type=text]:focus, input[type=date]:focus {
+  background-color: rgb(252, 238, 114);
   outline: none;
 }
 
-/* Set a style for the submit/login button */
 .btn {
   background-color: #4CAF50;
   color: white;
@@ -110,15 +138,33 @@ html, body {
   cursor: pointer;
   width: 100%;
   margin-bottom:10px;
-  opacity: 0.8;
 }
 
-/* Add a red background color to the cancel button */
+
 .cancel {
   background-color: red;
+  font-family: 'Chilanka', cursive;
+  font-weight: bold;
 }
 
-/* Add some hover effects to buttons */
-#nameForm .btn:hover, .open-button:hover {
-  opacity: 1;
+input[type=submit]{
+  width: 50%;
+  padding: 10px;
+  margin: 5px 0 11px 0;
+  border: none;
+  background: rgb(231, 216, 78);
+  color: black;
+  font-family: 'Chilanka', cursive;
+  font-weight: bold;
+}
+
+input[type=submit]:hover{
+  background-color: rgb(221, 205, 64);
+  color: black;
+  outline: none;
+  cursor: pointer;
+}
+
+#nameForm .btn:hover, #emailForm .btn:hover {
+  
 }

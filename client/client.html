@@ -1,55 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Our simple HTTP server</title>
+  <title>Event Scheduler</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Chilanka&display=swap" rel="stylesheet">
   <script>
-  const parseJSON = (xhr, content) => {
-    if(xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json'){
-      const obj = JSON.parse(xhr.response);
-      console.dir(obj);
-      
-      if(obj.message){
-        content.innerHTML += `<p>${obj.message}</p>`;
+    let newObj;
+    let update;
+    const parseJSON = (xhr, name, loading) => {
+      if(xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json'){
+        let obj = JSON.parse(xhr.response);
+        
+        if (name){
+          delete obj.events[name];
+          newObj = obj;
+        }
+        else if (update == true){
+          const eventGrid = document.querySelector('#eventGrid');
+          const nameField = nameForm.querySelector("#nameField");
+          let updateDiv = document.querySelector(`#${nameField.value}`);
+          console.dir(updateDiv);
+          updateDiv.remove();
+
+          let newDiv = document.createElement('div');
+          newDiv.setAttribute("class","figure");
+          newDiv.setAttribute("id",`${obj.events[nameField.value].name}`);
+          let newHeader = document.createElement("h3"); 
+          newHeader.appendChild(document.createTextNode(`${obj.events[nameField.value].name}`));
+          let newDate = document.createElement("p");
+          newDate.appendChild(document.createTextNode(`Date: ${obj.events[nameField.value].date}`));
+          let newDesc = document.createElement("p");
+          newDesc.appendChild(document.createTextNode(`${obj.events[nameField.value].description}`));
+          // let newEmailButton = document.createElement("button");
+          // newEmailButton.setAttribute("id","Email");
+          // newEmailButton.setAttribute("onclick","openEmailForm();");
+          // newEmailButton.appendChild(document.createTextNode("Email"));
+          let newDeleteButton = document.createElement("button");
+          newDeleteButton.setAttribute("onclick",`deleteDiv("#${obj.events[nameField.value].name}","${obj.events[nameField.value].name}");`);
+          newDeleteButton.setAttribute("id","deleteButton");
+          newDeleteButton.appendChild(document.createTextNode("X"));
+
+          newDiv.appendChild(newHeader);
+          newDiv.appendChild(newDate);
+          newDiv.appendChild(newDesc);
+          // newDiv.appendChild(newEmailButton);
+          newDiv.appendChild(newDeleteButton);
+
+          eventGrid.appendChild(newDiv);
+        }
+        else if (loading == true){
+          const eventGrid = document.querySelector('#eventGrid');
+          const nameField = nameForm.querySelector("#nameField");
+          for(event in obj.events){
+            let newDiv = document.createElement('div');
+            newDiv.setAttribute("class","figure");
+            newDiv.setAttribute("id",`${obj.events[event].name}`);
+            let newHeader = document.createElement("h3"); 
+            newHeader.appendChild(document.createTextNode(`${obj.events[event].name}`));
+            let newDate = document.createElement("p");
+            newDate.appendChild(document.createTextNode(`Date: ${obj.events[event].date}`));
+            let newDesc = document.createElement("p");
+            newDesc.appendChild(document.createTextNode(`${obj.events[event].description}`));
+            // let newEmailButton = document.createElement("button");
+            // newEmailButton.setAttribute("id","Email");
+            // newEmailButton.setAttribute("onclick","openEmailForm();");
+            // newEmailButton.appendChild(document.createTextNode("Email"));
+            let newDeleteButton = document.createElement("button");
+            newDeleteButton.setAttribute("onclick",`deleteDiv("#${obj.events[event].name}","${obj.events[event].name}");`);
+            newDeleteButton.setAttribute("id","deleteButton");
+            newDeleteButton.appendChild(document.createTextNode("X"));
+
+            newDiv.appendChild(newHeader);
+            newDiv.appendChild(newDate);
+            newDiv.appendChild(newDesc);
+            // newDiv.appendChild(newEmailButton);
+            newDiv.appendChild(newDeleteButton);
+
+            eventGrid.appendChild(newDiv);
+          };
+        }
+        else if (obj.events){
+          const eventGrid = document.querySelector('#eventGrid');
+          const nameField = nameForm.querySelector("#nameField");
+          
+          let newDiv = document.createElement('div');
+          newDiv.setAttribute("class","figure");
+          newDiv.setAttribute("id",`${obj.events[nameField.value].name}`);
+          let newHeader = document.createElement("h3"); 
+          newHeader.appendChild(document.createTextNode(`${obj.events[nameField.value].name}`));
+          let newDate = document.createElement("p");
+          newDate.appendChild(document.createTextNode(`Date: ${obj.events[nameField.value].date}`));
+          let newDesc = document.createElement("p");
+          newDesc.appendChild(document.createTextNode(`${obj.events[nameField.value].description}`));
+          // let newEmailButton = document.createElement("button");
+          // newEmailButton.setAttribute("id","Email");
+          // newEmailButton.setAttribute("onclick","openEmailForm();");
+          // newEmailButton.appendChild(document.createTextNode("Email"));
+          let newDeleteButton = document.createElement("button");
+          newDeleteButton.setAttribute("onclick",`deleteDiv("#${obj.events[nameField.value].name}","${obj.events[nameField.value].name}");`);
+          newDeleteButton.setAttribute("id","deleteButton");
+          newDeleteButton.appendChild(document.createTextNode("X"));
+
+          newDiv.appendChild(newHeader);
+          newDiv.appendChild(newDate);
+          newDiv.appendChild(newDesc);
+          // newDiv.appendChild(newEmailButton);
+          newDiv.appendChild(newDeleteButton);
+
+          eventGrid.appendChild(newDiv);
+        }
       }
-      else if (obj.events){
-        const eventGrid = document.querySelector('#eventGrid');
-        const nameField = nameForm.querySelector("#nameField");
-        console.log(nameField.value);
-        eventGrid.innerHTML += `<div class="figure">
-          <h3>${obj.events[nameField.value].name}</h3>
-            <p>Date: ${obj.events[nameField.value].date}</p>
-              <p>
-                ${obj.events[nameField.value].description}
-              </p>
-            <button id="${obj.events[nameField.value]}">Email this to Someone</button>
-          </div>`;
-      }
-    }
-  };
-  
-  const handleResponse = (xhr, parseResponse) => {
-      const content = document.querySelector('#content');
-      
-      switch(xhr.status){
-      	case 200:
-      		content.innerHTML += '<b>Event Added!</b>';
-      		break;
-        case 204:
-      		content.innerHTML += '<b>Updated (No Content)!</b>';
-      		break;
-      	case 400:
-      		content.innerHTML += '<b>Bad Request</b>';
-      		break;
-      	case 404:
-      	content.innerHTML += '<b>Resource Not Found</b>';
-      		break;
-      	default:
-      	content.innerHTML += '<b>Error code not implemented by client</b>';
-      		break;
-      }
+    };
     
-      parseJSON(xhr,content);
+    const handleResponse = (xhr,parseResponse,name,loading) => {
+      const content = document.querySelector('#content');
+
+      switch(xhr.status){
+        case 201:
+          alert("Event Added!");
+          update = false;
+          break;
+        case 204:
+          alert("Event Updated!");
+          update = true;
+          break;
+        case 400:
+          alert("Name, date, and a description are required!");
+          update = false;
+          break;
+        case 404:
+          alert("Resource Not Found");
+          update = false;
+          break;
+      }
+        
+      parseJSON(xhr,name,loading);
     };
 
     const requestUpdate = (e) => {
@@ -60,8 +145,8 @@
       
       xhr.send();
       
-			e.preventDefault();
-			return false; // prevents event bubbling
+      e.preventDefault();
+      return false; // prevents event bubbling
     };
 
     const sendPost = (e, nameForm) => {
@@ -84,27 +169,81 @@
 			
 			const formData = `name=${nameField.value}&date=${dateField.value}&description=${descField.value}`;
       xhr.send(formData); 
-      requestUpdate(e, nameField);
+      requestUpdate(e);
 			return false; // prevents event bubbling
     };
 
+    // const sendMail = (e, emailForm) => {
+    //   e.preventDefault();
+
+    //   const fNameField = emailForm.querySelector("#fname");
+    //   const lNameField = emailForm.querySelector("#lname");
+    //   const emailField = emailForm.querySelector("#email");
+
+    //   const sgMail = require("@sendgrid/mail");
+    //   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    //   const msg = {
+    //     to: emailField,
+    //     from: "event@scheduler.org",
+    //     subject: `${fNameField} has sent you an Event!`,
+    //     text: `${fNameField} ${lNameField} has sent you an event reminder! 
+    //       ${emailObj.name} ${emailObj.date} ${emailObj.description}`,
+    //   };
+    //   sgMail.send(msg);
+    // };
+
     function openForm() {
-      document.getElementById("myForm").style.display = "block";
+      document.querySelector("#myForm").style.display = "block";
       document.querySelector(".open-button").style.display = "none";
     }
 
+    // function openEmailForm() {
+    //   document.querySelector("#myForm").style.display = "none";
+    //   //document.querySelector("#emailFormDiv").style.display = "block";
+    //   document.querySelector(".open-button").style.display = "none";
+    // }
+    
     function closeForm() {
-      document.getElementById("myForm").style.display = "none";
+      document.querySelector("#myForm").style.display = "none";
       document.querySelector(".open-button").style.display = "block";
+    }
+
+    // function closeEmailForm() {
+    //   document.querySelector("#emailFormDiv").style.display = "none";
+    //   document.querySelector(".open-button").style.display = "block";
+    // }
+
+    function deleteDiv(id,name) {
+      let deletion = document.querySelector(id);
+      deletion.parentNode.removeChild(deletion);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/deleteEvent');
+      xhr.setRequestHeader("Accept","application/json");
+      xhr.onload = () => handleResponse(xhr,name);
+      
+      xhr.send(newObj);
+			return false;
     }
 
     const init = () => {
       const nameForm = document.querySelector('#nameForm');
+      //const emailForm = document.querySelector('#emailForm');
       const eventGrid = document.querySelector('#eventGrid');
       const addEvent = (e) => sendPost(e, nameForm);
-      
+      //const sendEmail = (e) => sendMail(e, emailForm);
+        
       nameForm.addEventListener('submit', addEvent);
+      //emailForm.addEventListener('submit', sendEmail);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET','/getEvents');
+      xhr.setRequestHeader("Accept","application/json");
+      xhr.onload = () => handleResponse(xhr,true,false,true);
+      
+      xhr.send();
     };
+
 
     window.onload = init;
     
@@ -112,10 +251,10 @@
 </head>
 <body>
   <section id="top">
-    <h3>Event Scheduler</h3>
+    <h1>Event Scheduler</h1>
     <button class="open-button" onclick="openForm()">Add Event</button>
     <div class="form-popup" id="myForm">
-      <form id="nameForm" action="/addEvent" method="post">
+      <form id="nameForm" action="/addEvent" method="POST">
         <label for="name">Event Name: </label>
         <input id="nameField" type="text" name="name" />
         <label for="date">Date: </label>
@@ -124,20 +263,23 @@
         <input id="descField" type="text" name="description" />
         <input type="submit" value="Add Event" />
       </form>
-      <button type="submit" class="btn cancel" onclick="closeForm()">Close</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </div>
+    <!-- <div id="emailFormDiv">
+			<form id="emailForm" name="myForm" action="/sendEmail" method="POST">
+				<label for="fname">Your First Name</label>
+				<input type="text" id="fname" name="firstname" placeholder="Your name..">
+				<label for="lname">Your Last Name</label>
+				<input type="text" id="lname" name="lastname" placeholder="Your last name..">
+				<label for="email" >Email Address to Send to</label>
+				<input type="text" id="email" name="emailAddress" placeholder="Your Email Address.." required>	
+				<input type="submit" value="Send Email">SEND</input>
+        </form>
+        <button type="button" class="btn cancel" onclick="closeEmailForm()">Close</button>
+    </div> -->
   </section>
   <section id="content">
     <div id="eventGrid">
-      <div class="figure">
-        <h3>Placeholder</h3>
-          <p>12-1-2020</p>
-            <p>
-              This is a placeholder div. This is a placeholder div. 
-              This is a placeholder div. This is a placeholder div. 
-            </p>
-        <button>Email this to Someone</button>
-      </div>
     </div>
   </section>
 </body>
