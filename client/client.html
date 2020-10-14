@@ -19,7 +19,6 @@
           const eventGrid = document.querySelector('#eventGrid');
           const nameField = nameForm.querySelector("#nameField");
           let updateDiv = document.querySelector(`#${nameField.value}`);
-          console.dir(updateDiv);
           updateDiv.remove();
 
           let newDiv = document.createElement('div');
@@ -82,6 +81,7 @@
         else if (obj.events){
           const eventGrid = document.querySelector('#eventGrid');
           const nameField = nameForm.querySelector("#nameField");
+          console.dir(nameField);
           
           let newDiv = document.createElement('div');
           newDiv.setAttribute("class","figure");
