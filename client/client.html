@@ -17,7 +17,7 @@
         }
         else if (update == true){
           const eventGrid = document.querySelector('#eventGrid');
-          const nameField = nameForm.querySelector("#nameField");
+          const nameField = document.querySelector("#nameField");
           let updateDiv = document.querySelector(`#${nameField.value}`);
           updateDiv.remove();
 
@@ -49,7 +49,6 @@
         }
         else if (loading == true){
           const eventGrid = document.querySelector('#eventGrid');
-          const nameField = nameForm.querySelector("#nameField");
           for(event in obj.events){
             let newDiv = document.createElement('div');
             newDiv.setAttribute("class","figure");
@@ -80,9 +79,9 @@
         }
         else if (obj.events){
           const eventGrid = document.querySelector('#eventGrid');
-          const nameField = nameForm.querySelector("#nameField");
+          const nameField = document.querySelector("#nameField");
           console.dir(nameField);
-          
+
           let newDiv = document.createElement('div');
           newDiv.setAttribute("class","figure");
           newDiv.setAttribute("id",`${obj.events[nameField.value].name}`);
