@@ -51,6 +51,7 @@
         }
         else if (loading == true){
           const eventGrid = document.querySelector('#eventGrid');
+
           for(event in obj.events){
             let newDiv = document.createElement('div');
             newDiv.setAttribute("class","figure");
@@ -83,7 +84,7 @@
           const eventGrid = document.querySelector('#eventGrid');
           const nameField = document.querySelector("#nameField");
           console.log(nameField.value);
-          let currentObj = obj.events[nameField.value];
+          let currentObj = obj.events[`${nameField.value}`];
           console.dir(currentObj);
 
           let newDiv = document.createElement('div');
