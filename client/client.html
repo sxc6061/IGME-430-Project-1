@@ -21,21 +21,23 @@
           let updateDiv = document.querySelector(`#${nameField.value}`);
           updateDiv.remove();
 
+          let currentObj = obj.events[nameField.value];
+
           let newDiv = document.createElement('div');
           newDiv.setAttribute("class","figure");
-          newDiv.setAttribute("id",`${obj.events[nameField.value].name}`);
+          newDiv.setAttribute("id",`${currentObj.name}`);
           let newHeader = document.createElement("h3"); 
-          newHeader.appendChild(document.createTextNode(`${obj.events[nameField.value].name}`));
+          newHeader.appendChild(document.createTextNode(`${currentObj.name}`));
           let newDate = document.createElement("p");
-          newDate.appendChild(document.createTextNode(`Date: ${obj.events[nameField.value].date}`));
+          newDate.appendChild(document.createTextNode(`Date: ${currentObj.date}`));
           let newDesc = document.createElement("p");
-          newDesc.appendChild(document.createTextNode(`${obj.events[nameField.value].description}`));
+          newDesc.appendChild(document.createTextNode(`${currentObj.description}`));
           // let newEmailButton = document.createElement("button");
           // newEmailButton.setAttribute("id","Email");
           // newEmailButton.setAttribute("onclick","openEmailForm();");
           // newEmailButton.appendChild(document.createTextNode("Email"));
           let newDeleteButton = document.createElement("button");
-          newDeleteButton.setAttribute("onclick",`deleteDiv("#${obj.events[nameField.value].name}","${obj.events[nameField.value].name}");`);
+          newDeleteButton.setAttribute("onclick",`deleteDiv("#${currentObj.name}","${currentObj.name}");`);
           newDeleteButton.setAttribute("id","deleteButton");
           newDeleteButton.appendChild(document.createTextNode("X"));
 
@@ -80,23 +82,23 @@
         else if (obj.events){
           const eventGrid = document.querySelector('#eventGrid');
           const nameField = document.querySelector("#nameField");
-          console.dir(nameField);
+          let currentObj = obj.events[nameField.value];
 
           let newDiv = document.createElement('div');
           newDiv.setAttribute("class","figure");
-          newDiv.setAttribute("id",`${obj.events[nameField.value].name}`);
+          newDiv.setAttribute("id",`${currentObj.name}`);
           let newHeader = document.createElement("h3"); 
-          newHeader.appendChild(document.createTextNode(`${obj.events[nameField.value].name}`));
+          newHeader.appendChild(document.createTextNode(`${currentObj.name}`));
           let newDate = document.createElement("p");
-          newDate.appendChild(document.createTextNode(`Date: ${obj.events[nameField.value].date}`));
+          newDate.appendChild(document.createTextNode(`Date: ${currentObj.date}`));
           let newDesc = document.createElement("p");
-          newDesc.appendChild(document.createTextNode(`${obj.events[nameField.value].description}`));
+          newDesc.appendChild(document.createTextNode(`${currentObj.description}`));
           // let newEmailButton = document.createElement("button");
           // newEmailButton.setAttribute("id","Email");
           // newEmailButton.setAttribute("onclick","openEmailForm();");
           // newEmailButton.appendChild(document.createTextNode("Email"));
           let newDeleteButton = document.createElement("button");
-          newDeleteButton.setAttribute("onclick",`deleteDiv("#${obj.events[nameField.value].name}","${obj.events[nameField.value].name}");`);
+          newDeleteButton.setAttribute("onclick",`deleteDiv("#${currentObj.name}","${currentObj.name}");`);
           newDeleteButton.setAttribute("id","deleteButton");
           newDeleteButton.appendChild(document.createTextNode("X"));
 
