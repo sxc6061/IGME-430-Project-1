@@ -22,7 +22,7 @@
           updateDiv.remove();
 
           let currentObj = obj.events[nameField.value];
-
+          
           let newDiv = document.createElement('div');
           newDiv.setAttribute("class","figure");
           newDiv.setAttribute("id",`${currentObj.name}`);
@@ -82,7 +82,9 @@
         else if (obj.events){
           const eventGrid = document.querySelector('#eventGrid');
           const nameField = document.querySelector("#nameField");
+          console.log(nameField.value);
           let currentObj = obj.events[nameField.value];
+          console.dir(currentObj);
 
           let newDiv = document.createElement('div');
           newDiv.setAttribute("class","figure");
